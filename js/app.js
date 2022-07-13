@@ -62,11 +62,37 @@ function drawBall() {
     ctx.closePath();
 }
 
+function drawPaddle (){
+    ctx.beginPath();
+    ctx.rect(paddleX, canvas.height-paddleHeight, paddleWidth, paddleHeight);
+    ctx.fillStyle = "#0095DD";
+    ctx.fill();
+    ctx.closePath();
+
+}
+
 function draw(){
     ctx.clearRect(0, 0, canvas.width, canvas.height); /// THIS LINE OF CODE IS ESSENTIAL - IT CLEARS THE CANVAS BEFORE EACH FRAME, meaning the ball won't leave a train
     drawBall()
+    drawPaddle()
     x += dx;
     y += dy;
+
+    if (x + dx > canvas.width-ballRadius || x + dx < ballRadius) {
+        dx = -dx;
+    }
+
+    if (y + dy > canvas.height-ballRadius || y + dy < ballRadius) {
+        dy = -dy;
+    }  ///adding in the ballRadius means the ball doesn't "disappear" into the wall as it hits
+
+    if(rightPressed){
+        paddleX += 7;
+    }
+    else if(leftPressed){
+        paddleX -=7;
+    }
+    
 }
 setInterval(draw, 10); // draw() will be executed within setInterval every 10 miliseconds. 
 // All the above does is draw the ball every 10 milliseconds. Below will make it move.
@@ -74,11 +100,62 @@ setInterval(draw, 10); // draw() will be executed within setInterval every 10 mi
 let x = canvas.width/2;
 let y = canvas.height-30;
 
-let dx = 2;
+let dx = 2;   ///THESE TWO, dx and dy, affect speed, for the game.
 let dy = -2;
+
+
+// Defining a paddle to hit the ball
+
+const paddleHeight = 10;
+const paddleWidth = 75;
+const paddleX = (canvas.width-paddleWidth) / 2;
 
 // Collission detection:
 
-const ballRadius = 10;
+const ballRadius = 10; //Setting this as the radius for use above.
 
 
+
+        //Top wall collission detection. IF ball touches wall, it reverse direction.
+        /* if (y + dy < 0) {
+            dy = -dy;
+        }
+
+        if (y + dy > canvas.height) {
+            dy = -dy;
+        } */
+        /* 
+        // The above two if's can be combined into one statement to save on code:
+
+        if (y + dy > canvas.height || y + dy < 0) {
+            dy = -dy;
+        }
+
+
+        //For left and right wall detection, its basically the same as above, just repeated for x instead of y.
+
+        if (x + dx > canvas.width || x + dx < 0) {
+            dx = -dx;
+        } */
+
+        // THE IMMEDIATE CODE ABOVE IS INSERTED INTO THE draw() function FOR IT TO WORK. 
+
+
+
+// Paddle in motion
+
+const rightPressed = false;
+const leftPressed = false; // False to start, because false = not pressed, and no one starts off the game with something moving.
+
+document.addEventListener("keydown", keyDownHandler, false);
+document.addEventListener("keyup", keyUpHandler, false); //These two event listenrs are only looking for if ANY key is pressed down or ANY key is released. You can use these to create functions for specific keys now, and what they do. See below.
+
+function keyDownHandler(e) { // 'e' is simply an event as a parameter, represented as 'e' here.
+    if(e.key == "Right" || e.key == "ArrowRight") {
+        rightPressed = true;
+    }
+    else if(e.key == "Left" || e.key == "ArrowLeft") {
+        leftPressed = true;
+    }  /// 'Right' and 'Left are specific for IE/edge browsers, where as 'ArrowRight' etc. is for all other browsers. Putting them both in ensures universal compatibility. 
+}
+//We now need to add paddle moving logic, which will be stored in the draw() function. Look above for rightPressed and leftPressed to see whats going on. 
