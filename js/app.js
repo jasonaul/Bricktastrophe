@@ -80,35 +80,53 @@ function draw(){
 
     if (x + dx > canvas.width-ballRadius || x + dx < ballRadius) {
         dx = -dx;
-    }
+    }///adding in the ballRadius means the ball doesn't "disappear" into the wall as it hits
 
-    if (y + dy > canvas.height-ballRadius || y + dy < ballRadius) {
+    if (y + dy < ballRadius) {
         dy = -dy;
-    }  ///adding in the ballRadius means the ball doesn't "disappear" into the wall as it hits
+    } else if (y + dy > canvas.height-ballRadius || y + dy < ballRadius) {
+        if (x > paddleX && x < paddleX + paddleWidth) {
+            dy = -dy; ///this else-if is for collission detection with the paddle.
+        }
+        else {alert("GAME OVER");
+        document.location.reload();
+        clearInterval(interval);
+    }
+    }  
 
     if(rightPressed){
         paddleX += 7;
+        //the next lines keep the paddle on the screen
+        if (paddleX + paddleWidth > canvas.width){
+            paddleX = canvas.width - paddleWidth;
+        }
     }
     else if(leftPressed){
         paddleX -=7;
+        //the next lines keep the paddle on the screen
+        if (paddleX < 0) {  ///why is this 0? Basically, because of x/y coordinates. an x of 0 means you are all the way to the left as it is. 
+            paddleX = 0;
+        }
     }
     
 }
-setInterval(draw, 10); // draw() will be executed within setInterval every 10 miliseconds. 
+
+
+var interval = setInterval(draw, 10); // draw() will be executed within setInterval every 10 miliseconds. 
 // All the above does is draw the ball every 10 milliseconds. Below will make it move.
 
 let x = canvas.width/2;
 let y = canvas.height-30;
 
-let dx = 2;   ///THESE TWO, dx and dy, affect speed, for the game.
-let dy = -2;
+let dx = 5;   ///THESE TWO, dx and dy, affect speed, for the game.
+let dy = -5;
 
 
 // Defining a paddle to hit the ball
 
 const paddleHeight = 10;
 const paddleWidth = 75;
-const paddleX = (canvas.width-paddleWidth) / 2;
+let paddleX = (canvas.width-paddleWidth) / 2;
 
 // Collission detection:
 
@@ -144,8 +162,8 @@ const ballRadius = 10; //Setting this as the radius for use above.
 
 // Paddle in motion
 
-const rightPressed = false;
-const leftPressed = false; // False to start, because false = not pressed, and no one starts off the game with something moving.
+var rightPressed = false;
+var leftPressed = false; // False to start, because false = not pressed, and no one starts off the game with something moving.
 
 document.addEventListener("keydown", keyDownHandler, false);
 document.addEventListener("keyup", keyUpHandler, false); //These two event listenrs are only looking for if ANY key is pressed down or ANY key is released. You can use these to create functions for specific keys now, and what they do. See below.
@@ -158,4 +176,14 @@ function keyDownHandler(e) { // 'e' is simply an event as a parameter, represent
         leftPressed = true;
     }  /// 'Right' and 'Left are specific for IE/edge browsers, where as 'ArrowRight' etc. is for all other browsers. Putting them both in ensures universal compatibility. 
 }
+
+function keyUpHandler(e) {
+    if(e.key == "Right" || e.key == "ArrowRight") {
+        rightPressed = false;
+    }
+    else if(e.key == "Left" || e.key == "ArrowLeft"){
+        leftPressed = false;
+    }
+}
 //We now need to add paddle moving logic, which will be stored in the draw() function. Look above for rightPressed and leftPressed to see whats going on. 
+
