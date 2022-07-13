@@ -71,10 +71,31 @@ function drawPaddle (){
 
 }
 
+function drawBricks (){
+    for(let c=0; c < brickColumnCount; c++){
+        for (let r=0; r < brickRowCount; r++) {
+            if(bricks[c][r].status == 1){ //this if statement and status refers to the 'status' down below, indicating if the brick should be on screen or not
+                let brickX = (c*(brickWidth + brickPadding)) + brickOffsetLeft;
+                let brickY = (r*(brickHeight + brickPadding)) + brickOffsetTop;
+                bricks[c][r].x = brickX;
+                bricks[c][r].y = brickY;
+                ctx.beginPath();
+                ctx.rect(brickX, brickY, brickWidth, brickHeight);
+                ctx.fillStyle = "#0095DD";
+                ctx.fill();
+                ctx.closePath();
+            }
+        }
+    }
+}
+
 function draw(){
     ctx.clearRect(0, 0, canvas.width, canvas.height); /// THIS LINE OF CODE IS ESSENTIAL - IT CLEARS THE CANVAS BEFORE EACH FRAME, meaning the ball won't leave a train
     drawBall()
     drawPaddle()
+    drawBricks()
+    collisionDetection()
+    drawScore()
     x += dx;
     y += dy;
 
@@ -121,6 +142,31 @@ let y = canvas.height-30;
 let dx = 5;   ///THESE TWO, dx and dy, affect speed, for the game.
 let dy = -5;
 
+let score = 0;
+
+/// THE BRICK VARIABLES (below) ///
+
+let brickRowCount = 15;
+let brickColumnCount = 7;
+let brickWidth = 75;
+let brickHeight = 20;
+let brickPadding = 10
+let brickOffsetTop = 30;
+let brickOffsetLeft = 30;
+    //above, we've defined the number of rows and columns of bricks, their width and height, padding between bricks, etc.
+
+    //below, holding bricks in a two-dimensional array. Will contain columns (c), which in turn contains rows (r), which each contain an object containing the x and y position to paint each brick on the screen.
+
+let bricks = [];
+for (let c = 0; c < brickColumnCount; c++) {
+    bricks[c] = [];
+    for (let r = 0; r < brickRowCount; r++) {
+        bricks[c][r] = { x: 0, y: 0, status: 1}; //we added a "status" property/parameter to indicate whether we watn to paint each brick on screen or not
+    }
+}
+
+/// THE BRICK VARIABLES (above) ///
+
 
 // Defining a paddle to hit the ball
 
@@ -131,6 +177,7 @@ let paddleX = (canvas.width-paddleWidth) / 2;
 // Collission detection:
 
 const ballRadius = 10; //Setting this as the radius for use above.
+
 
 
 
@@ -185,5 +232,37 @@ function keyUpHandler(e) {
         leftPressed = false;
     }
 }
+
 //We now need to add paddle moving logic, which will be stored in the draw() function. Look above for rightPressed and leftPressed to see whats going on. 
 
+
+
+/// Ball collision detection
+function collisionDetection() {
+    for (let c = 0; c < brickColumnCount; c++){
+        for (let r = 0; r < brickRowCount; r++) {
+            let b = bricks[c][r];
+            if (b.status == 1) {
+                if (x > b.x && x < b.x+brickWidth && y > b.y && y < b.y+brickHeight){
+                dy = -dy;
+                b.status = 0;
+                score ++; // this adds to the score function we have below
+                if(score == brickRowCount * brickColumnCount) {
+                    alert("YOU WIN!");
+                    document.location.reload();
+                    clearInterval(interval);
+                }
+            }
+        }
+    }
+} }
+
+
+
+/// Score - drawing the score on the canvas. Try finding a different method after you learn this.
+
+function drawScore () {
+    ctx.font = "16px Arial";
+    ctx.fillStyle = "#0095DD";
+    ctx.fillText("Score: " + score, 8, 20);
+}
