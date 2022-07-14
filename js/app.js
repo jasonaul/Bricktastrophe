@@ -52,13 +52,15 @@ ctx.closePath(); */
 
 /// THE ABOVE SECTION CAN BE DELETED IF NEED BE.
 
-
+/* const img1 = new Image();
+    img1.src='/imgs/red.png'
+ */
 
 function drawBall() {
     ctx.beginPath();
     ctx.arc(x, y, ballRadius, 0, Math.PI*2); // the first 2 numbers are the x/y coordinates on the screen, the 3rd is size/radius. The 4th is...fill? Maybe? x was originally 50, y was originally 50. They are replaced here as 'x' and 'y' to help make them move. See below.
     ctx.fillStyle = "#0095DD";
-    ctx.fill();
+        ctx.fill();
     ctx.closePath();
 }
 
