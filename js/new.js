@@ -50,7 +50,7 @@ class gameManager {
     constructor (startingRows, numColumns){
         this.numberOfColumns = numColumns;
 
-        //Gives us flesibility to dynamically scale rows
+        //Gives us flexibility to dynamically scale rows
         this.brickGrid = [];
 
         //start game with assigned number of rows:
@@ -76,6 +76,7 @@ class gameManager {
 
             var rowPosition = brick.position[0];
             //Check all bricks in this row:
+            console.log(brick.position[0])
 
             var rowDepleted = true;
 
@@ -84,12 +85,22 @@ class gameManager {
                 var myBrick = rowCollection[i];
 
                 if (myBrick.status > 0) {
-                    rowDepleted = false;
+                    rowDepleted = false; {
+                        
+                    }
                 } 
             }
 
+         
+
             return rowDepleted;
+
+            
         }    
+        if (rowDepleted = true) {
+            brick.draw();
+            /* rowArray.push(brick); */
+        }
 
 }
 
@@ -119,7 +130,7 @@ let paddleX = (canvas.width-paddleWidth) / 2;
 const ballRadius = 10; //Setting this as the radius for use above.
 
 
-var manager = new gameManager(12,7);
+var manager = new gameManager(12,3);
 draw();
 
 
@@ -141,7 +152,6 @@ function drawPaddle (){
 }
 
 
-//For my own learning (BELOW), below is the canvas creation of a red square.
 
 function draw(){
     ctx.clearRect(0, 0, canvas.width, canvas.height); /// THIS LINE OF CODE IS ESSENTIAL - IT CLEARS THE CANVAS BEFORE EACH FRAME, meaning the ball won't leave a train
@@ -243,9 +253,7 @@ function collisionDetection() {
                     var isRowDepleted = manager.isRowDepleted(b);
 
                     //LETS ADD MORE ROWS OF SHIT
-                   if (rowDepleted = true){
-                        Bricks.draw();
-                    }
+                   
 
                     console.log("Brick hit belonged to row: " + r + " | Is row depleted? " + isRowDepleted);
 
