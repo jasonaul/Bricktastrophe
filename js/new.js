@@ -5,9 +5,9 @@ class Bricks {
     constructor (position){
 
         //health of 1,2 or 3)
-        var hp = 1 + Math.floor(Math.random() * 3);
+        var hp = 1 /* + Math.floor(Math.random() * 3); */
         this.status = hp;
-        this.colorArray = ["#ff0000", "#FFA500", "#0095DD"];
+        this.colorArray = ["#ff0000"/* , "#FFA500", "#0095DD" */];
 
 /*         let brickRowCount = 15;
         let brickColumnCount = 7; */
@@ -59,6 +59,7 @@ class gameManager {
             //Create a brick for each column
 
             var rowArray = [];
+            console.log(rowArray)
 
             for (let j = 0; j < numColumns; j++){
                 //create brick and store in array for traceability
@@ -66,9 +67,11 @@ class gameManager {
                 brick.draw();
 
                 rowArray.push(brick);
+              
             }
 
             this.brickGrid.push(rowArray);
+            
         }
     }
        
@@ -80,6 +83,19 @@ class gameManager {
 
             var rowDepleted = true;
 
+            /* if (rowDepleted = true); {
+                for (let i = 0; i < gameManager.brickGrid; i++ ) {
+                    var rowArray = [];
+                    for (let j = 0; j < numColumns; j++) {
+                        var brick = new Bricks [i,j];
+                        brick.draw();
+                        rowArray.unshift(brick);
+                    }
+                }
+            } */
+            
+           
+
             var rowCollection = this.brickGrid[rowPosition];
             for (let i = 0; i < rowCollection.length; i++){
                 var myBrick = rowCollection[i];
@@ -90,6 +106,10 @@ class gameManager {
                     }
                 } 
             }
+
+            /* if (rowDepleted = true) {
+                rowArray.unshift(new Bricks);
+            } */
 
          
 
@@ -251,6 +271,8 @@ function collisionDetection() {
 
                     //IS ROW GONE?
                     var isRowDepleted = manager.isRowDepleted(b);
+                 
+                    
 
                     //LETS ADD MORE ROWS OF SHIT
                    

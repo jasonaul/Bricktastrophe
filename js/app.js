@@ -2,65 +2,147 @@ console.log("hello")
 
 //General Brick class
 class Bricks {
-    constructor (type, hp){
-        this.type = type;
-        this.hp = hp;
+    constructor (position){
+        let numeral = [1, 2, 3]
+        //health of 1,2 or 3)
+        var hp = 1  + Math.floor(Math.random() * numeral[0]); 
+        this.status = hp;
+        this.colorArray = ["#ff0000" , "#FFA500", "#0095DD"];
+
+       
+
+/*         let brickRowCount = 15;
+        let brickColumnCount = 7; */
+        let brickWidth = 75;
+        let brickHeight = 20;
+        let brickPadding = 10
+        let brickOffsetTop = 30;
+        let brickOffsetLeft = 30;
+
+        this.width = brickWidth;
+        this.height = brickHeight;
+        this.position = position;
+
+        let brickX = (this.position[1]*(this.width + brickPadding)) + brickOffsetLeft;
+        let brickY = (this.position[0]*(this.height + brickPadding)) + brickOffsetTop;
+
+        this.x = brickX;
+        this.y = brickY;
+
     }
+
+        draw() {
+
+            if(this.status >= 1){
+                ctx.beginPath();
+                ctx.rect(this.x, this.y, this.width, this.height);
+                ctx.fillStyle = this.colorArray[this.status - 1];  
+                ctx.fill();
+                ctx.closePath();
+        }
+
+            //debugger;
+        }
+       
+   
 }
 //End Brick Class
 
-// Class extends
+class gameManager {
+    constructor (startingRows, numColumns){
+        this.numberOfColumns = numColumns;
 
-class FirstBrick extends Bricks {
-    constructor (type, hp){
-        super(type, hp)
-        this.type = type;
-        this.hp = 1;
+        //Gives us flexibility to dynamically scale rows
+        this.brickGrid = [];
+
+        //start game with assigned number of rows:
+        for (let i = 0; i < startingRows; i++){
+            console.log(i);
+            //Create a brick for each column
+
+            var rowArray = [];
+            console.log(rowArray)
+
+            for (let j = 0; j < numColumns; j++){
+                //create brick and store in array for traceability
+                var brick = new Bricks([i,j],);
+                brick.draw();
+
+                rowArray.push(brick);
+              
+            }
+
+            this.brickGrid.push(rowArray);
+            
+        }
     }
-}
+       
+        isRowDepleted(brick){
 
+            var rowPosition = brick.position[0];
+            //Check all bricks in this row:
+            console.log(brick.position[0])
+
+            var rowDepleted = true;
+
+  
+            var rowCollection = this.brickGrid[rowPosition];
+            for (let i = 0; i < rowCollection.length; i++){
+                var myBrick = rowCollection[i];
+
+                if (myBrick.status > 0) {
+                    rowDepleted = false; {
+                        
+                    }
+                } 
+            }
+
+         
+
+            return rowDepleted;
+
+            
+        }    
+
+        }
 
 
 
 ///Rendering the graphics requres use of the Canvas element. Referencing it here in Javascript.
 
-const canvas = document.getElementById("brickCanvas"); // Storing a reference to the HTML canvas element to the canvas variable. Then creating a ctx variable to store the 2d renders. 
+const canvas = document.getElementById("brickCanvas"); // Storing a reference to the HTML canvas element to the canvas variable. Then creating a ctx variable to store the 2d renders.
 const ctx = canvas.getContext("2d");
 
+var interval = setInterval(draw, 10); // draw() will be executed within setInterval every 10 miliseconds.
+// All the above does is draw the ball every 10 milliseconds. Below will make it move.
 
-//For my own learning (BELOW), below is the canvas creation of a red square.
+let x = canvas.width/2;
+let y = canvas.height-30;
 
-/* ctx.beginPath();
-ctx.rect(20, 40, 50, 50);
-ctx.fillStyle = "#FF0000";
-ctx.fill();
-ctx.closePath();
+let dx = 5;   ///THESE TWO, dx and dy, affect speed, for the game.
+let dy = -5;
 
-ctx.beginPath();
-ctx.arc(240, 160, 20, 0, Math.PI*2, false); //For drawing purposes, false = clockwise, true = counter-clockwise. Probably not necessary to have here. 
-ctx.fillStyle = "green";
-ctx.fill();
-ctx.closePath();
+let score = 0;
+
+// Defining a paddle to hit the ball
+const paddleHeight = 10;
+const paddleWidth = 175;
+let paddleX = (canvas.width-paddleWidth) / 2;
+
+// Collission detection:
+
+const ballRadius = 10; //Setting this as the radius for use above.
 
 
-///blue stroked empty rectangle
-ctx.beginPath();
-ctx.rect(160, 10, 100, 40);
-ctx.strokeStyle = "rgba(0, 0, 255, 0.5)";
-ctx.stroke();
-ctx.closePath(); */
+var manager = new gameManager(12,3);
+draw();
 
-/// THE ABOVE SECTION CAN BE DELETED IF NEED BE.
-
-/* const img1 = new Image();
-    img1.src='/imgs/red.png'
- */
 
 function drawBall() {
     ctx.beginPath();
     ctx.arc(x, y, ballRadius, 0, Math.PI*2); // the first 2 numbers are the x/y coordinates on the screen, the 3rd is size/radius. The 4th is...fill? Maybe? x was originally 50, y was originally 50. They are replaced here as 'x' and 'y' to help make them move. See below.
     ctx.fillStyle = "#0095DD";
-        ctx.fill();
+    ctx.fill();
     ctx.closePath();
 }
 
@@ -73,29 +155,23 @@ function drawPaddle (){
 
 }
 
-function drawBricks (){
-    for(let c=0; c < brickColumnCount; c++){
-        for (let r=0; r < brickRowCount; r++) {
-            if(bricks[c][r].status == 1){ //this if statement and status refers to the 'status' down below, indicating if the brick should be on screen or not
-                let brickX = (c*(brickWidth + brickPadding)) + brickOffsetLeft;
-                let brickY = (r*(brickHeight + brickPadding)) + brickOffsetTop;
-                bricks[c][r].x = brickX;
-                bricks[c][r].y = brickY;
-                ctx.beginPath();
-                ctx.rect(brickX, brickY, brickWidth, brickHeight);
-                ctx.fillStyle = "#0095DD";
-                ctx.fill();
-                ctx.closePath();
-            }
-        }
-    }
-}
+
 
 function draw(){
     ctx.clearRect(0, 0, canvas.width, canvas.height); /// THIS LINE OF CODE IS ESSENTIAL - IT CLEARS THE CANVAS BEFORE EACH FRAME, meaning the ball won't leave a train
     drawBall()
     drawPaddle()
-    drawBricks()
+
+     var bricksMatrix = manager.brickGrid;
+
+    for (let r = 0; r < bricksMatrix.length; r++){
+        for (let c = 0; c < bricksMatrix[r].length; c++) {
+            var brick = bricksMatrix[r][c];
+            brick.draw();
+        }
+    }
+
+
     collisionDetection()
     drawScore()
     x += dx;
@@ -127,86 +203,12 @@ function draw(){
     else if(leftPressed){
         paddleX -=7;
         //the next lines keep the paddle on the screen
-        if (paddleX < 0) {  ///why is this 0? Basically, because of x/y coordinates. an x of 0 means you are all the way to the left as it is. 
+        if (paddleX < 0) {  ///why is this 0? Basically, because of x/y coordinates. an x of 0 means you are all the way to the left as it is.
             paddleX = 0;
         }
     }
-    
+   
 }
-
-
-var interval = setInterval(draw, 10); // draw() will be executed within setInterval every 10 miliseconds. 
-// All the above does is draw the ball every 10 milliseconds. Below will make it move.
-
-let x = canvas.width/2;
-let y = canvas.height-30;
-
-let dx = 5;   ///THESE TWO, dx and dy, affect speed, for the game.
-let dy = -5;
-
-let score = 0;
-
-/// THE BRICK VARIABLES (below) ///
-
-let brickRowCount = 15;
-let brickColumnCount = 7;
-let brickWidth = 75;
-let brickHeight = 20;
-let brickPadding = 10
-let brickOffsetTop = 30;
-let brickOffsetLeft = 30;
-    //above, we've defined the number of rows and columns of bricks, their width and height, padding between bricks, etc.
-
-    //below, holding bricks in a two-dimensional array. Will contain columns (c), which in turn contains rows (r), which each contain an object containing the x and y position to paint each brick on the screen.
-
-let bricks = [];
-for (let c = 0; c < brickColumnCount; c++) {
-    bricks[c] = [];
-    for (let r = 0; r < brickRowCount; r++) {
-        bricks[c][r] = { x: 0, y: 0, status: 1}; //we added a "status" property/parameter to indicate whether we watn to paint each brick on screen or not
-    }
-}
-
-/// THE BRICK VARIABLES (above) ///
-
-
-// Defining a paddle to hit the ball
-
-const paddleHeight = 10;
-const paddleWidth = 75;
-let paddleX = (canvas.width-paddleWidth) / 2;
-
-// Collission detection:
-
-const ballRadius = 10; //Setting this as the radius for use above.
-
-
-
-
-        //Top wall collission detection. IF ball touches wall, it reverse direction.
-        /* if (y + dy < 0) {
-            dy = -dy;
-        }
-
-        if (y + dy > canvas.height) {
-            dy = -dy;
-        } */
-        /* 
-        // The above two if's can be combined into one statement to save on code:
-
-        if (y + dy > canvas.height || y + dy < 0) {
-            dy = -dy;
-        }
-
-
-        //For left and right wall detection, its basically the same as above, just repeated for x instead of y.
-
-        if (x + dx > canvas.width || x + dx < 0) {
-            dx = -dx;
-        } */
-
-        // THE IMMEDIATE CODE ABOVE IS INSERTED INTO THE draw() function FOR IT TO WORK. 
-
 
 
 // Paddle in motion
@@ -223,7 +225,7 @@ function keyDownHandler(e) { // 'e' is simply an event as a parameter, represent
     }
     else if(e.key == "Left" || e.key == "ArrowLeft") {
         leftPressed = true;
-    }  /// 'Right' and 'Left are specific for IE/edge browsers, where as 'ArrowRight' etc. is for all other browsers. Putting them both in ensures universal compatibility. 
+    }  /// 'Right' and 'Left are specific for IE/edge browsers, where as 'ArrowRight' etc. is for all other browsers. Putting them both in ensures universal compatibility.
 }
 
 function keyUpHandler(e) {
@@ -235,30 +237,47 @@ function keyUpHandler(e) {
     }
 }
 
-//We now need to add paddle moving logic, which will be stored in the draw() function. Look above for rightPressed and leftPressed to see whats going on. 
-
+//We now need to add paddle moving logic, which will be stored in the draw() function. Look above for rightPressed and leftPressed to see whats going on.
 
 
 /// Ball collision detection
 function collisionDetection() {
-    for (let c = 0; c < brickColumnCount; c++){
-        for (let r = 0; r < brickRowCount; r++) {
-            let b = bricks[c][r];
-            if (b.status == 1) {
-                if (x > b.x && x < b.x+brickWidth && y > b.y && y < b.y+brickHeight){
-                dy = -dy;
-                b.status = 0;
-                score ++; // this adds to the score function we have below
-                if(score == brickRowCount * brickColumnCount) {
-                    alert("YOU WIN!");
-                    document.location.reload();
-                    clearInterval(interval);
+
+    var bricksMatrix = manager.brickGrid;
+
+    for (let r = 0; r < bricksMatrix.length; r++){
+        for (let c = 0; c < bricksMatrix[r].length; c++) {
+            let b = bricksMatrix[r][c]
+            if (b.status >= 1) {
+                if (x > b.x && x < b.x+b.width && y > b.y && y < b.y+b.height){
+                    dy = -dy;
+                    b.status = b.status - 1;
+
+                    //IS ROW GONE?
+                    var isRowDepleted = manager.isRowDepleted(b);
+                 
+                    if (isRowDepleted == true) {
+                        gameManager.rowArray.unshift(0)
+                    }
+
+                    //LETS ADD MORE ROWS OF SHIT
+                   
+
+                    console.log("Brick hit belonged to row: " + r + " | Is row depleted? " + isRowDepleted);
+
+                 
+                    score ++; // this adds to the score function we have below
+                   /*  if(score == brickRowCount * brickColumnCount) {
+                        alert("YOU WIN!");
+                        document.location.reload();
+                        clearInterval(interval);
+                    } */
+                   
                 }
             }
         }
     }
-} }
-
+}
 
 
 /// Score - drawing the score on the canvas. Try finding a different method after you learn this.
