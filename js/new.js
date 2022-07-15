@@ -9,8 +9,8 @@ class Bricks {
         this.status = hp;
         this.colorArray = ["#ff0000", "#FFA500", "#0095DD"];
 
-        let brickRowCount = 15;
-        let brickColumnCount = 7;
+/*         let brickRowCount = 15;
+        let brickColumnCount = 7; */
         let brickWidth = 75;
         let brickHeight = 20;
         let brickPadding = 10
@@ -85,7 +85,7 @@ class gameManager {
 
                 if (myBrick.status > 0) {
                     rowDepleted = false;
-                }
+                } 
             }
 
             return rowDepleted;
@@ -111,7 +111,7 @@ let score = 0;
 
 // Defining a paddle to hit the ball
 const paddleHeight = 10;
-const paddleWidth = 75;
+const paddleWidth = 175;
 let paddleX = (canvas.width-paddleWidth) / 2;
 
 // Collission detection:
@@ -119,7 +119,7 @@ let paddleX = (canvas.width-paddleWidth) / 2;
 const ballRadius = 10; //Setting this as the radius for use above.
 
 
-var manager = new gameManager(10,3);
+var manager = new gameManager(12,7);
 draw();
 
 
@@ -243,7 +243,9 @@ function collisionDetection() {
                     var isRowDepleted = manager.isRowDepleted(b);
 
                     //LETS ADD MORE ROWS OF SHIT
-
+                   if (rowDepleted = true){
+                        Bricks.draw();
+                    }
 
                     console.log("Brick hit belonged to row: " + r + " | Is row depleted? " + isRowDepleted);
 
