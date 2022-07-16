@@ -272,8 +272,9 @@ function collisionDetection() {
 
 
                     if (r == 11 && isRowDepleted == true){
-                        console.log("SKJDHFLKSJHLFKJSHDLFKJSHDLFKJHSDLKFJHSDLKJFHSLKD")
-                        /* manager.brickGrid.unshift(manager.brickGrid) */
+                        console.log("THE LAST ROW HAS BEEN DESTROYED.")
+                       /*  new gameManager.rowArray.push(0) */
+                        /* manager.brickGrid.unshift(0)  */
 
                     }
                 
