@@ -1,3 +1,5 @@
+//latest version
+
 const canvas = document.getElementById("brickCanvas"); // Storing a reference to the HTML canvas element to the canvas variable. Then creating a ctx variable to store the 2d renders.
 const ctx = canvas.getContext("2d");
 
@@ -6,6 +8,7 @@ class Brick {
     constructor (position){
         let numeral = [1, 2, 3]
         //health of 1,2 or 3)
+        
         var hp = 1  + Math.floor(Math.random() * numeral[0]); 
         this.status = hp;
         this.colorArray = ["#ff0000" , "#FFA500", "#0095DD"];
@@ -129,8 +132,6 @@ class gameManager {
 }
 
 
-
-///Rendering the graphics requres use of the Canvas element. Referencing it here in Javascript.
 
 
 
@@ -270,6 +271,7 @@ function collisionDetection() {
     for (let r = 0; r < bricksMatrix.length; r++){
         for (let c = 0; c < bricksMatrix[r].length; c++) {
             let b = bricksMatrix[r][c]
+          
             if (b.status >= 1) {
                 if (x > b.x && x < b.x+b.width && y > b.y && y < b.y+b.height){
                     dy = -dy;
@@ -291,10 +293,41 @@ function collisionDetection() {
                     manager.brickGrid.unshift("VARIABLE") // The variable you want to go here. This will be how you add a new row. */
 
 
+                  /*   for (let b = 0; b < bricksMatrix.length; b++){
+                        if (b.status < 1) {
+                            new gameManager(12, 12)
+                        }
+                    } */
 
-                    if (r == 11 && isRowDepleted == true){
+/*                     const isTrue = manager.brickGrid.every(obj => obj.status == 0);
+                    console.log ("IS TRUE TRUE TRUE", isTrue); */
+
+/*                     const isTrue = bricksMatrix.every(obj => obj.status == 0)
+                    console.log ("IS TRUE TRUE TRUE", isTrue);
+                    
+                    if (b.status == 0){
+                        console.log ("THE STATUS IS ZEERRRRRROOOO")
+                    } */
+
+                    
+
+/*                     let statuses = [];
+                    console.log("SDKLJFHSLKDJFHLSKDJHFLKSJDHFKSJHDF", statuses)
+                    for (let i = 0, j = 0; i < bricksMatrix.length, j < bricksMatrix.length; i ++, j ++) {
+                        if (statuses.indexOf(bricksMatrix[i].status) === 0 && (bricksMatrix[j].status) === 0)
+                        console.log("CHECHCHCEHECHCEHEHCECHECCHE", bricksMatrix[i].status)
+                        statuses.push(bricksMatrix[i].status);}
+                        if (statuses.length === 1){
+                            console.log("THEY ARE ALL THE SAME")
+                        } */
+                        
+                    
+
+
+                    if (r == 11 &&  isRowDepleted == true){
                         console.log("THE LAST ROW HAS BEEN DESTROYED.")
-                        manager.createNewRow();
+                        
+                        new gameManager (7, 7)
                        /*  new gameManager.rowArray.push(0) */
                         /* manager.brickGrid.unshift(0)  */
 
