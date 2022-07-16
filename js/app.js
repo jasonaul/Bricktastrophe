@@ -11,8 +11,7 @@ class Bricks {
 
        
 
-/*         let brickRowCount = 15;
-        let brickColumnCount = 7; */
+
         let brickWidth = 75;
         let brickHeight = 20;
         let brickPadding = 10
@@ -61,7 +60,7 @@ class gameManager {
             //Create a brick for each column
 
             var rowArray = [];
-            console.log(rowArray)
+
 
             for (let j = 0; j < numColumns; j++){
                 //create brick and store in array for traceability
@@ -97,9 +96,10 @@ class gameManager {
                 } 
             }
 
-         
 
+/* console.log('ROWDEPLETED', rowDepleted); */
             return rowDepleted;
+            
 
             
         }    
@@ -168,6 +168,7 @@ function draw(){
         for (let c = 0; c < bricksMatrix[r].length; c++) {
             var brick = bricksMatrix[r][c];
             brick.draw();
+           /*  console.log(bricksMatrix[r][c]) */
         }
     }
 
@@ -253,16 +254,29 @@ function collisionDetection() {
                     dy = -dy;
                     b.status = b.status - 1;
 
+                    console.log('MANAGER HERE', manager)
+                  /*   console.log ("BRICK GRID", manager.rowArray) */
+
                     //IS ROW GONE?
                     var isRowDepleted = manager.isRowDepleted(b);
-                 
-                    if (isRowDepleted == true) {
-                        gameManager.rowArray.unshift(0)
+
+
+                    //LETS ADD MORE ROWS
+
+                  
+                    /*manager.brickGrid // This is the grid for the game
+                    manager.isRowDepleted // Boolean
+
+                    manager.brickGrid.unshift("VARIABLE") // The variable you want to go here. This will be how you add a new row. */
+
+
+
+                    if (r == 11 && isRowDepleted == true){
+                        console.log("SKJDHFLKSJHLFKJSHDLFKJSHDLFKJHSDLKFJHSDLKJFHSLKD")
+                        /* manager.brickGrid.unshift(manager.brickGrid) */
+
                     }
-
-                    //LETS ADD MORE ROWS OF SHIT
-                   
-
+                
                     console.log("Brick hit belonged to row: " + r + " | Is row depleted? " + isRowDepleted);
 
                  
@@ -280,7 +294,7 @@ function collisionDetection() {
 }
 
 
-/// Score - drawing the score on the canvas. Try finding a different method after you learn this.
+/// Score - drawing the score on the canvas. 
 
 function drawScore () {
     ctx.font = "16px Arial";
