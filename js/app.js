@@ -1,7 +1,8 @@
-console.log("hello")
+const canvas = document.getElementById("brickCanvas"); // Storing a reference to the HTML canvas element to the canvas variable. Then creating a ctx variable to store the 2d renders.
+const ctx = canvas.getContext("2d");
 
 //General Brick class
-class Bricks {
+class Brick {
     constructor (position){
         let numeral = [1, 2, 3]
         //health of 1,2 or 3)
@@ -9,7 +10,7 @@ class Bricks {
         this.status = hp;
         this.colorArray = ["#ff0000" , "#FFA500", "#0095DD"];
 
-       
+        this.brick = null;
 
 
         let brickWidth = 75;
@@ -38,12 +39,19 @@ class Bricks {
                 ctx.fillStyle = this.colorArray[this.status - 1];  
                 ctx.fill();
                 ctx.closePath();
-        }
+            }
 
-            //debugger;
+
         }
        
-   
+        reDraw() {
+                /* ctx.clearRect(0, 0, this.width, this.height); */
+                ctx.beginPath();
+                ctx.rect(this.x, this.y, this.width, this.height);
+                ctx.fillStyle = this.colorArray[this.status - 1];  
+                ctx.fill();
+                ctx.closePath();
+        }
 }
 //End Brick Class
 
@@ -64,7 +72,7 @@ class gameManager {
 
             for (let j = 0; j < numColumns; j++){
                 //create brick and store in array for traceability
-                var brick = new Bricks([i,j],);
+                var brick = new Brick([i,j],);
                 brick.draw();
 
                 rowArray.push(brick);
@@ -76,42 +84,55 @@ class gameManager {
         }
     }
        
-        isRowDepleted(brick){
+    isRowDepleted(brick){
 
-            var rowPosition = brick.position[0];
-            //Check all bricks in this row:
-            console.log(brick.position[0])
+        var rowPosition = brick.position[0];
+        //Check all bricks in this row:
+        console.log(brick.position[0])
 
-            var rowDepleted = true;
+        var rowDepleted = true;
 
-  
-            var rowCollection = this.brickGrid[rowPosition];
-            for (let i = 0; i < rowCollection.length; i++){
-                var myBrick = rowCollection[i];
+        console.log(rowPosition);
+        var rowCollection = this.brickGrid[rowPosition];
+        for (let i = 0; i < rowCollection.length; i++){
+            var myBrick = rowCollection[i];
 
-                if (myBrick.status > 0) {
-                    rowDepleted = false; {
-                        
-                    }
-                } 
-            }
-
-
-/* console.log('ROWDEPLETED', rowDepleted); */
-            return rowDepleted;
-            
-
-            
-        }    
-
+            if (myBrick.status > 0) {
+                rowDepleted = false; {
+                    
+                }
+        
+            } 
         }
+
+        
+
+        /* console.log('ROWDEPLETED', rowDepleted); */
+        return rowDepleted;
+        
+
+        
+    }    
+
+    createNewRow(){
+       /* brickGrid.rowArray[11,0] */ 
+       /* var moveRow = this.brickGrid.push[11] */
+       var newRow = this.brickGrid[11]
+       this.brickGrid.unshift[newRow]
+       for (let i = 0; i < newRow.length; i++) {
+           var myBrick = newRow[i]
+           myBrick.reDraw();
+       }
+       /* this.brickGrid.unshift(0,0)   */   
+    }
+
+}
 
 
 
 ///Rendering the graphics requres use of the Canvas element. Referencing it here in Javascript.
 
-const canvas = document.getElementById("brickCanvas"); // Storing a reference to the HTML canvas element to the canvas variable. Then creating a ctx variable to store the 2d renders.
-const ctx = canvas.getContext("2d");
+
 
 var interval = setInterval(draw, 10); // draw() will be executed within setInterval every 10 miliseconds.
 // All the above does is draw the ball every 10 milliseconds. Below will make it move.
@@ -126,7 +147,7 @@ let score = 0;
 
 // Defining a paddle to hit the ball
 const paddleHeight = 10;
-const paddleWidth = 175;
+const paddleWidth = 300;
 let paddleX = (canvas.width-paddleWidth) / 2;
 
 // Collission detection:
@@ -273,6 +294,7 @@ function collisionDetection() {
 
                     if (r == 11 && isRowDepleted == true){
                         console.log("THE LAST ROW HAS BEEN DESTROYED.")
+                        manager.createNewRow();
                        /*  new gameManager.rowArray.push(0) */
                         /* manager.brickGrid.unshift(0)  */
 
