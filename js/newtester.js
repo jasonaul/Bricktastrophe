@@ -2,6 +2,8 @@
 // Storing a reference to the HTML canvas element to the canvas variable. Then creating a ctx variable to store the 2d renders.
 //==============================================================
 
+
+
 const canvas = document.getElementById("brickCanvas"); 
 const ctx = canvas.getContext("2d");
 
@@ -19,6 +21,9 @@ const brickRows = 12; // BRICK_ROWS
 var brickGrid = new Array(brickColumns * brickRows);
 var brickCount = 0;
 var numChoice = 0;
+var status = 1;
+ballX = 75;
+ballY = 75;
 
 
 
@@ -29,7 +34,7 @@ var numChoice = 0;
 //==============================================================
 
 class Brick {
-    constructor (position){
+    constructor (position, status){
         let numeral = [1, 2, 3]
         //health of 1,2 or 3)
         /* this.numChoice = 0; */
@@ -68,9 +73,9 @@ class Brick {
         brickReset () {
             brickCount = 0;
             var i;
-            for (var i = 0; i < 3 * brickColumns; i++){
+            /* for (var i = 0; i < 3 * brickColumns; i++){
                 brickGrid[i] = false;
-            }
+            } */
             for (; i < brickColumns * brickRows; i++){
                 if(Math.random() < 0) {
                     brickGrid[i] = true;
@@ -93,6 +98,8 @@ class Brick {
         }
 }
 
+var brickles = new Brick (1)
+
 
 //==============================================================
 // gameManager Class
@@ -101,6 +108,8 @@ class Brick {
 class gameManager {
     constructor (startingRows, numColumns){
         this.numberOfColumns = numColumns;
+
+        
 
         //Gives us flexibility to dynamically scale rows
         this.brickGrid = [];
@@ -157,47 +166,44 @@ class gameManager {
 
         
     }
+
+    collisionDetection() {
+
+        var bricksMatrix = manager.brickGrid;
     
-   /*  newEverything () {
-        Brick.numChoice = 2
-        new gameManager(12, 3)
- 
+        for (let r = 0; r < bricksMatrix.length; r++){
+            for (let c = 0; c < bricksMatrix[r].length; c++) {
+                let b = bricksMatrix[r][c]
+              
+                if (b.status >= 1) {
+                    if (x > b.x && x < b.x+b.width && y > b.y && y < b.y+b.height){
+                        ballSpeedY = -ballSpeedY;
+                        b.status = b.status - 1;
+    
+                        console.log('MANAGER HERE', manager)
+
+    
+                        //IS ROW GONE?
+                        var isRowDepleted = manager.isRowDepleted(b);
+    
+
+                        score ++;
+                        brickCount --;
+                        console.log("BRIRRIRIRIRIRIRIRIRIRIRIRIRIR", brickCount)
+    
+                        
+
+                       
+                    }
+                }
+            }
+        }
     }
- */
-/*     createNewRow(){
-     
-       var newRow = this.brickGrid[11]
-       this.brickGrid.unshift[newRow]
-       for (let i = 0; i < newRow.length; i++) {
-           var myBrick = newRow[i]
-           myBrick.reDraw();
-       }
-       
-    } */
+
+    
 
 }
 
-
-
-/* function brickReset () {
-    brickCount = 0;
-    var i; */
-  /*   for (var i = 0; i < 3 * brickColumns; i++){
-        brickGrid[i] = false;
-    } */
-   /*  for (; i < brickColumns * brickRows; i++){
-        if(Math.random() < 0) {
-            brickGrid[i] = true;
-            console.log("SLKDFJLSKDJFLKSJDFLKSJDFLSJDKF", brickGrid[i])
-        } else {
-            brickGrid[i] = false;
-        }
-        brickGrid[i] = true;
-        brickCount ++;
-        console.log("BRIRRIRIRIRIRIRIRIRIRIRIRIRIR", brickCount)
-    }
-    
-} */
 
 
 
@@ -214,8 +220,8 @@ class gameManager {
     let x = canvas.width/2;
     let y = canvas.height-30;
 
-    let dx = 10;   
-    let dy = -10;
+    let ballSpeedX = 10;   
+    let ballSpeedY = -10;
         // The above two lines, dx and dy, affect speed, for the game.
 
     let score = 0;
@@ -258,6 +264,8 @@ function draw(){
     ctx.clearRect(0, 0, canvas.width, canvas.height); /// THIS LINE OF CODE IS ESSENTIAL - IT CLEARS THE CANVAS BEFORE EACH FRAME, meaning the ball won't leave a train
     drawBall()
     drawPaddle()
+    manager.collisionDetection()
+    /* ballBrickColl() */
 
      var bricksMatrix = manager.brickGrid;
 
@@ -269,28 +277,20 @@ function draw(){
         }
     }
 
-
-
-
-
-/// The above, i've gotten it to at least draw a new grid of bricks, but without collision detection.
-
-
-
-    collisionDetection()
+    
     drawScore()
-    x += dx;
-    y += dy;
+    x += ballSpeedX;
+    y += ballSpeedY;
 
-    if (x + dx > canvas.width-ballRadius || x + dx < ballRadius) {
-        dx = -dx;
+    if (x + ballSpeedX > canvas.width-ballRadius || x + ballSpeedX < ballRadius) {
+        ballSpeedX = -ballSpeedX;
     }///adding in the ballRadius means the ball doesn't "disappear" into the wall as it hits
 
-    if (y + dy < ballRadius) {
-        dy = -dy;
-    } else if (y + dy > canvas.height-ballRadius || y + dy < ballRadius) {
+    if (y + ballSpeedY < ballRadius) {
+        ballSpeedY = -ballSpeedY;
+    } else if (y + ballSpeedY > canvas.height-ballRadius || y + ballSpeedY < ballRadius) {
         if (x > paddleX && x < paddleX + paddleWidth) {
-            dy = -dy; ///this else-if is for collission detection with the paddle.
+            ballSpeedY = -ballSpeedY; ///this else-if is for collission detection with the paddle.
         }
         else {alert("GAME OVER");
         document.location.reload();
@@ -312,13 +312,31 @@ function draw(){
             paddleX = 0;
         }
     }
+
+    //You've used the things below in the if brickCount == - 36 statement
     
+/* brickles.brickReset(); */
+/* brickles.draw(); */
+/* manager.collisionDetection */
+
     if (brickCount == -36) {
+        
+        /* numChoice++; */
+        
+        let brickCount = 0;
+        
         new gameManager(12,3);
+        newCollision
+        console.log("NEW BRICK COUNT", brickCount)
+        
+        
         
     }
    
 }
+
+var newCollision = draw();
+
 
 
 //==============================================================
@@ -352,109 +370,6 @@ function keyUpHandler(e) {
 //We now need to add paddle moving logic, which will be stored in the draw() function. Look above for rightPressed and leftPressed to see whats going on.
 
 
-/// Ball collision detection
-function collisionDetection() {
-
-    var bricksMatrix = manager.brickGrid;
-
-    for (let r = 0; r < bricksMatrix.length; r++){
-        for (let c = 0; c < bricksMatrix[r].length; c++) {
-            let b = bricksMatrix[r][c]
-          
-            if (b.status >= 1) {
-                if (x > b.x && x < b.x+b.width && y > b.y && y < b.y+b.height){
-                    dy = -dy;
-                    b.status = b.status - 1;
-
-                    console.log('MANAGER HERE', manager)
-                  /*   console.log ("BRICK GRID", manager.rowArray) */
-
-                    //IS ROW GONE?
-                    var isRowDepleted = manager.isRowDepleted(b);
-
-
-                    //LETS ADD MORE ROWS
-
-                  
-                    /*manager.brickGrid // This is the grid for the game
-                    manager.isRowDepleted // Boolean
-
-                    manager.brickGrid.unshift("VARIABLE") // The variable you want to go here. This will be how you add a new row. */
-
-
-                  /*   for (let b = 0; b < bricksMatrix.length; b++){
-                        if (b.status < 1) {
-                            new gameManager(12, 12)
-                        }
-                    } */
-
-/*                     const isTrue = manager.brickGrid.every(obj => obj.status == 0);
-                    console.log ("IS TRUE TRUE TRUE", isTrue); */
-
-/*                     const isTrue = bricksMatrix.every(obj => obj.status == 0)
-                    console.log ("IS TRUE TRUE TRUE", isTrue);
-                    
-                    if (b.status == 0){
-                        console.log ("THE STATUS IS ZEERRRRRROOOO")
-                    } */
-
-                    
-
-/*                     let statuses = [];
-                    console.log("SDKLJFHSLKDJFHLSKDJHFLKSJDHFKSJHDF", statuses)
-                    for (let i = 0, j = 0; i < bricksMatrix.length, j < bricksMatrix.length; i ++, j ++) {
-                        if (statuses.indexOf(bricksMatrix[i].status) === 0 && (bricksMatrix[j].status) === 0)
-                        console.log("CHECHCHCEHECHCEHEHCECHECCHE", bricksMatrix[i].status)
-                        statuses.push(bricksMatrix[i].status);}
-                        if (statuses.length === 1){
-                            console.log("THEY ARE ALL THE SAME")
-                        } */
-                        
-                    
-
-
-                    if (r == 11 &&  isRowDepleted == true){
-                        console.log("THE LAST ROW HAS BEEN DESTROYED.")
-                       
-                         /* manager.newEverything() ; */
-                        
-                        
-                       /*  new gameManager.rowArray.push(0) */
-                        /* manager.brickGrid.unshift(0)  */
-
-                    }
-                
-                    console.log("Brick hit belonged to row: " + r + " | Is row depleted? " + isRowDepleted);
-
-                 
-                    score ++;
-                    brickCount --;
-                    console.log("BRIRRIRIRIRIRIRIRIRIRIRIRIRIR", brickCount)
-
-                    if (brickCount == -36) {
-                        /*  numChoice ++; */
-                         manager;
-                         
-                     }
-
-
-
-             
-                     // this adds to the score function we have below
-                   /*  if(score == brickRowCount * brickColumnCount) {
-                        alert("YOU WIN!");
-                        document.location.reload();
-                        clearInterval(interval);
-                    } */
-                   
-                }
-            }
-        }
-    }
-}
-
-
-
 
 /// Score - drawing the score on the canvas. 
 
@@ -463,3 +378,4 @@ function drawScore () {
     ctx.fillStyle = "#0095DD";
     ctx.fillText("Score: " + score, 8, 20);
 }
+
