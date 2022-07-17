@@ -1,12 +1,21 @@
-const canvas = document.getElementById("brickCanvas"); // Storing a reference to the HTML canvas element to the canvas variable. Then creating a ctx variable to store the 2d renders.
+//==============================================================
+// Storing a reference to the HTML canvas element to the canvas variable. Then creating a ctx variable to store the 2d renders.
+//==============================================================
+
+const canvas = document.getElementById("brickCanvas"); 
 const ctx = canvas.getContext("2d");
 
-//General Brick class
+//==============================================================
+// Brick class
+//==============================================================
+
 class Brick {
     constructor (position){
         let numeral = [1, 2, 3]
         //health of 1,2 or 3)
-        var hp = 1  + Math.floor(Math.random() * numeral[0]); 
+        this.numChoice = 0;
+        
+        var hp = 1  + Math.floor(Math.random() * numeral[this.numChoice]); 
         this.status = hp;
         this.colorArray = ["#ff0000" , "#FFA500", "#0095DD"];
 
@@ -53,7 +62,11 @@ class Brick {
                 ctx.closePath();
         }
 }
-//End Brick Class
+
+
+//==============================================================
+// gameManager Class
+//==============================================================
 
 class gameManager {
     constructor (startingRows, numColumns){
@@ -112,7 +125,13 @@ class gameManager {
         
 
         
-    }    
+    }
+    
+    newEverything () {
+        Brick.numChoice = 2
+        new gameManager(12, 3)
+        /* ctx.clearRect(0, 0, canvas.width, canvas.height); */
+    }
 
     createNewRow(){
        /* brickGrid.rowArray[11,0] */ 
@@ -129,33 +148,38 @@ class gameManager {
 }
 
 
+//==============================================================
+// Global Variables
+//==============================================================
 
 
+    var interval = setInterval(draw, 10); 
+        // draw() will be executed within setInterval every 10 miliseconds.
+        // All the above does is draw the ball every 10 milliseconds. Below will make it move.
 
-var interval = setInterval(draw, 10); // draw() will be executed within setInterval every 10 miliseconds.
-// All the above does is draw the ball every 10 milliseconds. Below will make it move.
+    let x = canvas.width/2;
+    let y = canvas.height-30;
 
-let x = canvas.width/2;
-let y = canvas.height-30;
+    let dx = 5;   
+    let dy = -5;
+        // The above two lines, dx and dy, affect speed, for the game.
 
-let dx = 5;   ///THESE TWO, dx and dy, affect speed, for the game.
-let dy = -5;
+    let score = 0;
 
-let score = 0;
+    const paddleHeight = 10;
+    const paddleWidth = 300;
+    let paddleX = (canvas.width-paddleWidth) / 2;
+        // Defining a paddle to hit the ball    
 
-// Defining a paddle to hit the ball
-const paddleHeight = 10;
-const paddleWidth = 300;
-let paddleX = (canvas.width-paddleWidth) / 2;
-
-// Collission detection:
-
-const ballRadius = 10; //Setting this as the radius for use above.
+    const ballRadius = 10; //Setting this as the radius for use above.
 
 
-var manager = new gameManager(12,3);
-draw();
+    var manager = new gameManager(12,3);
+    /* draw(); */
 
+//==============================================================
+// Draw Functions
+//==============================================================
 
 function drawBall() {
     ctx.beginPath();
@@ -231,7 +255,9 @@ function draw(){
 }
 
 
-// Paddle in motion
+//==============================================================
+// Player Controls
+//==============================================================
 
 var rightPressed = false;
 var leftPressed = false; // False to start, because false = not pressed, and no one starts off the game with something moving.
@@ -323,8 +349,9 @@ function collisionDetection() {
 
                     if (r == 11 &&  isRowDepleted == true){
                         console.log("THE LAST ROW HAS BEEN DESTROYED.")
+                        manager.newEverything();
                         
-                        new gameManager (7, 7)
+                        
                        /*  new gameManager.rowArray.push(0) */
                         /* manager.brickGrid.unshift(0)  */
 
