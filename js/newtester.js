@@ -110,7 +110,7 @@ class gameManager {
         this.numberOfColumns = numColumns;
 
         
-
+        
         //Gives us flexibility to dynamically scale rows
         this.brickGrid = [];
 
@@ -167,7 +167,7 @@ class gameManager {
         
     }
 
-    collisionDetection() {
+    /* collisionDetection() {
 
         var bricksMatrix = manager.brickGrid;
     
@@ -198,14 +198,44 @@ class gameManager {
                 }
             }
         }
-    }
+    } */
 
     
 
 }
 
+function collisionDetection() {
+
+    var bricksMatrix = manager.brickGrid;
+    
+    for (let r = 0; r < bricksMatrix.length; r++){
+        for (let c = 0; c < bricksMatrix[r].length; c++) {
+            let b = bricksMatrix[r][c]
+          
+            if (b.status >= 1) {
+                if (x > b.x && x < b.x+b.width && y > b.y && y < b.y+b.height){
+                    ballSpeedY = -ballSpeedY;
+                    b.status = b.status - 1;
+
+                    console.log('MANAGER HERE', manager)
 
 
+                    //IS ROW GONE?
+                    var isRowDepleted = manager.isRowDepleted(b);
+
+
+                    score ++;
+                    brickCount --;
+                    console.log("BRIRRIRIRIRIRIRIRIRIRIRIRIRIR", brickCount)
+
+                    
+
+                   
+                }
+            }
+        }
+    }
+}
 
 
 //==============================================================
@@ -264,7 +294,7 @@ function draw(){
     ctx.clearRect(0, 0, canvas.width, canvas.height); /// THIS LINE OF CODE IS ESSENTIAL - IT CLEARS THE CANVAS BEFORE EACH FRAME, meaning the ball won't leave a train
     drawBall()
     drawPaddle()
-    manager.collisionDetection()
+    collisionDetection()
     /* ballBrickColl() */
 
      var bricksMatrix = manager.brickGrid;
@@ -326,7 +356,8 @@ function draw(){
         let brickCount = 0;
         
         new gameManager(12,3);
-        newCollision
+        collisionDetection();
+        
         console.log("NEW BRICK COUNT", brickCount)
         
         
@@ -335,7 +366,7 @@ function draw(){
    
 }
 
-var newCollision = draw();
+/* var newCollision = draw(); */
 
 
 
