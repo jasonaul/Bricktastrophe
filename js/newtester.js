@@ -70,13 +70,13 @@ class Brick {
 
         }
 
-        brickReset () {
+/*         brickReset () {
             brickCount = 0;
-            var i;
+            var i; */
             /* for (var i = 0; i < 3 * brickColumns; i++){
                 brickGrid[i] = false;
             } */
-            for (; i < brickColumns * brickRows; i++){
+     /*        for (; i < brickColumns * brickRows; i++){
                 if(Math.random() < 0) {
                     brickGrid[i] = true;
                     console.log("SLKDFJLSKDJFLKSJDFLKSJDFLSJDKF", brickGrid[i])
@@ -86,7 +86,7 @@ class Brick {
                 brickGrid[i] = true;
                 brickCount ++;
             }
-        }
+        } */
        
         reDraw() {
                 /* ctx.clearRect(0, 0, this.width, this.height); */
@@ -353,10 +353,10 @@ function draw(){
         
         /* numChoice++; */
         
-        let brickCount = 0;
+        brickCount = 0;
         
-        new gameManager(12,3);
-        collisionDetection();
+        manager = new gameManager(12,3);
+        /* collisionDetection(); */
         
         console.log("NEW BRICK COUNT", brickCount)
         
