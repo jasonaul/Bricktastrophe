@@ -5,6 +5,26 @@
 const canvas = document.getElementById("brickCanvas"); 
 const ctx = canvas.getContext("2d");
 
+//==============================================================
+// Power Ups
+//==============================================================
+
+const powerupChance = 1; // probability of a powerup per brick hit (between 0 and 1)
+const powerupSpeed = 0.15;
+
+const powerupType = {
+    EXTENSION: {color: "black", symbol: "="},
+    STICKY: {color: "green", symbol: "~"}
+}
+
+let powerups = [];
+var powerExtension, powerSticky, powerSuper
+
+/* const soundBrick = new Audio("/sounds/brick.m4a")
+const soundPaddle = new Audio("/sounds/paddle.m4a")
+const soundPower = new Audio("/sounds/powerup.m4a")
+const soundWall = new Audio("/sounds/wall.m4a") */
+
 
 //==============================================================
 // Global Variables
@@ -59,13 +79,14 @@ let paddleX = (canvas.width-paddleWidth) / 2;
 
 class Brick {
     constructor (position, status){
-        let numeral = [1, 2, 3]
+        let numeral = [1, 2, 3, 4, 5, 6]
         //health of 1,2 or 3)
         /* this.numChoice = 0; */
         
         var hp = 1  + Math.floor(Math.random() * numeral[numChoice]); 
+        totalHP.push(hp);
         this.status = hp;
-        this.colorArray = ["#ff0000" , "#FFA500", "#0095DD"];
+        this.colorArray = ["#ff0000" , "#FFA500", "#0095DD", "#fcba03", "#000000", "#16e038"];
 
         /* this.brick = null; */
 
@@ -95,6 +116,18 @@ class Brick {
     }
 }
 
+let totalHP = [];
+console.log ("TOTOTTOTOTOTOTL", totalHP)
+
+/* const allEqual = totalHP => totalHP.every(val => val === totalHP[0]) */
+    
+
+/* function allAreEqual(array) {
+    const result = new Set(array).size === 0;
+    return result
+} */
+
+
 var brickles = new Brick (1)
 
 //==============================================================
@@ -114,7 +147,7 @@ class gameManager {
             //Create a brick for each column
 
             var rowArray = [];
-
+            /* console.log("ROW ARRRRAAAAAYYYYY", rowArray) */
 
             for (let j = 0; j < numColumns; j++){
                 //create brick and store in array for traceability
@@ -125,6 +158,14 @@ class gameManager {
               
             }
 
+
+/*             let hpSum = 0;
+            brickGrid.forEach(element => {
+                hpSum += element.brickles.status;
+            });
+
+            console.log("SUM SUM SUM SUM SUM", hpSum) */
+
             this.brickGrid.push(rowArray);
             
         }
@@ -134,9 +175,10 @@ class gameManager {
 
         var rowPosition = brick.position[0];
         //Check all bricks in this row:
-        /* console.log(brick.position[0]) */
+        /* console.log("POSSSSSSSSSSSITION", brick.position[0]) */
 
         var rowDepleted = true;
+
 
         /* console.log(rowPosition); */
         var rowCollection = this.brickGrid[rowPosition];
@@ -149,8 +191,15 @@ class gameManager {
                 }
         
             } 
+            
         }
 
+/*         function allAreTrue(myBrick){
+            return myBrick.every(element => element === true);
+        }
+        console.log(allAreTrue(myBrick))
+
+        console.log("%%%%%%%%%%%%%%%%%%%%%%%%%%%", rowDepleted) */
         return rowDepleted;
   
     }}
@@ -170,10 +219,7 @@ function collisionDetection() {
         for (let c = 0; c < bricksMatrix[r].length; c++) {
             let b = bricksMatrix[r][c]
 
-            unique = [new Set(bricksMatrix.map(b => b.status))]
-            if (unique.length == 0) {
-                console.log("THEY ARE ALL EQAUASLD:KFJ:SLDKFJ:SLDKJF:SLKDJF")
-            }
+
            /*  console.log("STATUS STATUS STATUS", bricksMatrix[11][0].status) */
           
             if (b.status >= 1) {
@@ -196,6 +242,10 @@ function collisionDetection() {
 
                    
                 }
+                /* if (r == 11 &&  isRowDepleted == true)
+                    {
+                        manager = new gameManager (12,3)
+                    } */
                 if (brickCount == -36) {
         
         
@@ -205,10 +255,22 @@ function collisionDetection() {
                     manager = new gameManager(12,3);
                     
                     console.log("NEW BRICK COUNT", b.status)
-                    
-                    
+                                       
                     
                 }
+
+                //create a powerup
+
+/*                 if (Math.random() <= powerupChance) {
+                    let powerpositionX = bricksMatrix[r][c].left + bricksMatrix[r][c].w / 2;
+                    let powerpositionY = bricksMatrix[r][c].top + bricksMatrix[r][c].w / 2;
+                    let powerupSize = bricksMatrix[r][c].w / 2;
+                    let powerKeys = Object.keys(powerupType);
+                    let powerupKey = powerKeys[Math.floor(Math.random() * powerKeys.length)];
+                    powerups.push(new PowerUp(powerpositionX, powerpositionY, powerupSize, powerupType[powerupKey]));
+
+                } */
+
 /*                 const isCleared = Object.values(b.status).every(value => value === 0);
                 console.log(isCleared) */
             }
@@ -224,6 +286,10 @@ function drawBall() {
     ctx.fillStyle = "#0095DD";
     ctx.fill();
     ctx.closePath();
+/*     powerExtension = false;
+    powerSticky = false;
+    powerSuper = false; */
+
 }
 
 function drawPaddle (){
@@ -235,12 +301,24 @@ function drawPaddle (){
 
 }
 
-
-
+/* function PowerUp (x, y, size, type) {
+    this.w = size;
+    this.h = size;
+    this.x = x;
+    this.y = y;
+    this.type = type;
+    this.yveolcity = powerupSpeed * height;
+}
+ */
+/* function drawPowerUps() {
+    ctx.lineWidth = wall * 0.35;
+}
+ */
 function draw(){
     ctx.clearRect(0, 0, canvas.width, canvas.height); /// THIS LINE OF CODE IS ESSENTIAL - IT CLEARS THE CANVAS BEFORE EACH FRAME, meaning the ball won't leave a train
     drawBall()
     drawPaddle()
+    /* drawPowerUps() */
     collisionDetection()
 
      var bricksMatrix = manager.brickGrid;
@@ -260,6 +338,7 @@ function draw(){
 
     if (x + ballSpeedX > canvas.width-ballRadius || x + ballSpeedX < ballRadius) {
         ballSpeedX = -ballSpeedX;
+       /*  soundPaddle.play(); */
     }///adding in the ballRadius means the ball doesn't "disappear" into the wall as it hits
 
     if (y + ballSpeedY < ballRadius) {
