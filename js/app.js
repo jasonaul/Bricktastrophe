@@ -5,6 +5,7 @@
 const canvas = document.getElementById("brickCanvas"); 
 const ctx = canvas.getContext("2d");
 
+
 //==============================================================
 // Global Variables
 //==============================================================
@@ -351,7 +352,13 @@ function keyUpHandler(e) {
 //==============================================================
 
 function drawScore () {
-    ctx.font = "16px Arial";
-    ctx.fillStyle = "#0095DD";
+    ctx.font = "700 22px Arial";
+    ctx.strokeStyle = "#dd0000";
+    ctx.strokeFill = "#0062ff";
+    ctx.lineWidth = 2;
+    ctx.strokeText("Score: " + score, 8, 20);
+    ctx.fillStyle = 'white';
     ctx.fillText("Score: " + score, 8, 20);
+    
 }
+
