@@ -78,17 +78,18 @@ let paddleX = (canvas.width-paddleWidth) / 2;
 //==============================================================
 
 class Brick {
+
     constructor (position, status){
-        let numeral = [1, 2, 3, 4, 5, 6]
+        let numeral = [1, 2, 3, 4, 5, 6, 7, 8]
         //health of 1,2 or 3)
-        /* this.numChoice = 0; */
+
         
         var hp = 1  + Math.floor(Math.random() * numeral[numChoice]); 
-        totalHP.push(hp);
-        this.status = hp;
-        this.colorArray = ["#ff0000" , "#FFA500", "#0095DD", "#fcba03", "#000000", "#16e038"];
 
-        /* this.brick = null; */
+        this.status = hp;
+        this.colorArray = ["#ff0000" , "#FFA500", "#0095DD", "#fcba03", "#000000", "#16e038", "#e534eb", "#c9e6b3"];
+
+
 
         this.width = brickWidth;
         this.height = brickHeight;
@@ -100,6 +101,14 @@ class Brick {
         this.x = brickX;
         this.y = brickY;
 
+    }
+
+    getColor() {
+        return this.color
+    }
+
+    getHP() {
+        return this.status
     }
 
     draw() {
@@ -138,8 +147,9 @@ var brickles = new Brick (1)
 class gameManager {
     constructor (startingRows, numColumns){
         this.numberOfColumns = numColumns;
-
+        this.bricks = 0;
         this.brickGrid = [];
+        this.brickHP = 0;
 
         //start game with assigned number of rows:
         for (let i = 0; i < startingRows; i++){
@@ -152,6 +162,11 @@ class gameManager {
             for (let j = 0; j < numColumns; j++){
                 //create brick and store in array for traceability
                 var brick = new Brick([i,j],);
+                this.bricks++;
+                /* brick.getHP; */
+                this.brickHP = this.brickHP + brick.getHP()
+
+                console.log("BRICKS", this.brickHP)
                 brick.draw();
 
                 rowArray.push(brick);
@@ -236,43 +251,26 @@ function collisionDetection() {
 
                     score ++;
                     brickCount --;
-                    /* console.log("BRIRRIRIRIRIRIRIRIRIRIRIRIRIR", brickCount) */
-
-                    
-
-                   
+                    manager.brickHP--;
+                    console.log(manager.brickHP)
                 }
-                /* if (r == 11 &&  isRowDepleted == true)
-                    {
-                        manager = new gameManager (12,3)
-                    } */
-                if (brickCount == -36) {
+
+
+
+                if (manager.brickHP == 0) {
         
         
-        
+                    numChoice ++
                     brickCount = 0;
                     
                     manager = new gameManager(12,3);
                     
-                    console.log("NEW BRICK COUNT", b.status)
+
                                        
                     
                 }
 
-                //create a powerup
 
-/*                 if (Math.random() <= powerupChance) {
-                    let powerpositionX = bricksMatrix[r][c].left + bricksMatrix[r][c].w / 2;
-                    let powerpositionY = bricksMatrix[r][c].top + bricksMatrix[r][c].w / 2;
-                    let powerupSize = bricksMatrix[r][c].w / 2;
-                    let powerKeys = Object.keys(powerupType);
-                    let powerupKey = powerKeys[Math.floor(Math.random() * powerKeys.length)];
-                    powerups.push(new PowerUp(powerpositionX, powerpositionY, powerupSize, powerupType[powerupKey]));
-
-                } */
-
-/*                 const isCleared = Object.values(b.status).every(value => value === 0);
-                console.log(isCleared) */
             }
         }
     }
