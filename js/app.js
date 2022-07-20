@@ -45,15 +45,17 @@ var brickCount = 0;
 var numChoice = 0;
 /* var status = 1; */
 let score = 0;
+var timer;
+let timeStart = 0;
 
         /**********
         Ball Variables
         ***********/
 ballX = 75;
 ballY = 75;
-const ballRadius = 10; 
-let ballSpeedX = 5 ;   
-let ballSpeedY = -5;
+const ballRadius = 12; 
+let ballSpeedX = 15 ;   
+let ballSpeedY = -15;
 
 
 var interval = setInterval(draw, 10); 
@@ -67,7 +69,7 @@ var interval = setInterval(draw, 10);
 let x = canvas.width/2;
 let y = canvas.height-30;
 const paddleHeight = 20;
-const paddleWidth = 125;
+const paddleWidth = 425;
 let paddleX = (canvas.width-paddleWidth) / 2;
 // Defining a paddle to hit the ball    
 
@@ -117,6 +119,9 @@ class Brick {
             ctx.beginPath();
             ctx.rect(this.x, this.y, this.width, this.height);
             ctx.fillStyle = this.colorArray[this.status - 1];  
+            ctx.stroke();
+            ctx.lineWidth = 5;
+            ctx.strokeStyle = "black";
             ctx.fill();
             ctx.closePath();
         }
@@ -261,11 +266,15 @@ function collisionDetection() {
 
                 if (manager.brickHP == 0) {
         
-        
+                    if (score >=700) {
+                        let numChoice = 7;
+                        manager = new gameManager(12,3);
+                    }
+                    else{
                     numChoice ++
                     brickCount = 0;
                     
-                    manager = new gameManager(12,3);
+                    manager = new gameManager(12,3);}
                     
 
                                        
@@ -333,6 +342,7 @@ function draw(){
 
     
     drawScore()
+    drawTimer()
     x += ballSpeedX;
     y += ballSpeedY;
 
@@ -425,5 +435,22 @@ function drawScore () {
     ctx.fillStyle = 'white';
     ctx.fillText("Score: " + score, 8, 20);
     
+    
+}
+
+function updateTimer(){
+    timeStart = timeStart + 1;
+}
+timer = setInterval(updateTimer, 1000);
+updateTimer();
+
+function drawTimer () {
+    ctx.font = "700 22px Arial";
+    ctx.strokeStyle = "#1c09ed";
+    ctx.strokeFill = "#0062ff";
+    ctx.lineWidth = 2;
+    ctx.strokeText("Timer: " + timeStart, 220, 20);
+    ctx.fillStyle = 'white';
+    ctx.fillText("Timer: " + timeStart, 220, 20);
 }
 
