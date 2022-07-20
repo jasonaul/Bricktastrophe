@@ -45,6 +45,7 @@ var brickCount = 0;
 var numChoice = 0;
 /* var status = 1; */
 let score = 0;
+var highscore = localStorage.getItem("highscore")
 var timer;
 let timeStart = 0;
 
@@ -54,8 +55,8 @@ let timeStart = 0;
 ballX = 75;
 ballY = 75;
 const ballRadius = 12; 
-let ballSpeedX = 15 ;   
-let ballSpeedY = -15;
+let ballSpeedX = 5 ;   
+let ballSpeedY = -5;
 
 
 var interval = setInterval(draw, 10); 
@@ -69,7 +70,7 @@ var interval = setInterval(draw, 10);
 let x = canvas.width/2;
 let y = canvas.height-30;
 const paddleHeight = 20;
-const paddleWidth = 425;
+const paddleWidth = 125;
 let paddleX = (canvas.width-paddleWidth) / 2;
 // Defining a paddle to hit the ball    
 
@@ -358,7 +359,8 @@ function draw(){
             ballSpeedY = -ballSpeedY; ///this else-if is for collission detection with the paddle.
         }
         else {alert("GAME OVER");
-        document.location.reload();
+       /*  document.location.reload(); */
+       window.location.reload(false);
         clearInterval(interval);
     }
     }  
@@ -454,3 +456,29 @@ function drawTimer () {
     ctx.fillText("Timer: " + timeStart, 220, 20);
 }
 
+
+/*     if (score > highscore) {
+        localStorage.setItem("highscore", score);
+        console.log("HIGH SCORE", highscore)
+    }
+
+else {localStorage.setItem("highscore", score);
+console.log("HIGH SCORE", highscore)
+} */
+
+/* if (score > highscore) {
+    localStorage.setItem("highscore", score);
+    
+} */
+
+
+let scoreStr = localStorage.getItem(highscore);
+        if (scoreStr == null) {
+            highscore = 0;
+            console.log("HIGH SCORE", highscore)
+        } else {
+            highscore = parseInt(scoreStr);
+            console.log("HIGH SCORE", highscore)
+        }
+console.log("HIGH SCORE", highscore)
+console.log(localStorage)
