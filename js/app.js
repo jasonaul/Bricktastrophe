@@ -255,7 +255,9 @@ function collisionDetection() {
                     console.log(manager.brickHP)
                 }
 
-
+        /**********
+        Grid Repeat / Redraw
+        ***********/
 
                 if (manager.brickHP == 0) {
         
@@ -369,23 +371,9 @@ function draw(){
 
 
     
-        /**********
-        Grid Repeat / Redraw
-        ***********/
 
-  /*   if (brickCount == -36) {
-        
-        
-        
-        brickCount = 0;
-        
-        manager = new gameManager(12,3);
-        
-        console.log("NEW BRICK COUNT", brickCount)
-        
-        
-        
-    } */
+
+
    
 }
 

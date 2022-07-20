@@ -1,5 +1,5 @@
 body {
-    background-image: url(/imgs/brickwall.jpeg);
+    background-image: url(../imgs/brickwall.jpeg);
     background-repeat: repeat;
     background-size: cover;
 }
@@ -8,7 +8,7 @@ body {
 html, body {height: 100%;}
 
 #brickCanvas {
-    border-style: dotted;
+    border: 5px solid black;
 
     height: 90%;
     position: absolute;
@@ -23,7 +23,7 @@ html, body {height: 100%;}
 
 canvas {
     display: inline;
-    background-image: url(/imgs/wall.jpg);
+    background-image: url(../imgs/wall.jpg);
     background-size: 300px 300px;
     padding-bottom:30px;
     
