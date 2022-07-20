@@ -52,8 +52,8 @@ let score = 0;
 ballX = 75;
 ballY = 75;
 const ballRadius = 10; 
-let ballSpeedX = 17 ;   
-let ballSpeedY = -17;
+let ballSpeedX = 5 ;   
+let ballSpeedY = -5;
 
 
 var interval = setInterval(draw, 10); 
@@ -66,8 +66,8 @@ var interval = setInterval(draw, 10);
 
 let x = canvas.width/2;
 let y = canvas.height-30;
-const paddleHeight = 10;
-const paddleWidth = 300;
+const paddleHeight = 20;
+const paddleWidth = 125;
 let paddleX = (canvas.width-paddleWidth) / 2;
 // Defining a paddle to hit the ball    
 
@@ -87,7 +87,7 @@ class Brick {
         var hp = 1  + Math.floor(Math.random() * numeral[numChoice]); 
 
         this.status = hp;
-        this.colorArray = ["#ff0000" , "#FFA500", "#0095DD", "#fcba03", "#000000", "#16e038", "#e534eb", "#c9e6b3"];
+        this.colorArray = ["#ff0000" , "#FFA500", "#0095DD", "#ddff00", "#000000", "#16e038", "#e534eb", "#c9e6b3"];
 
 
 
