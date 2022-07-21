@@ -1,7 +1,8 @@
 //==============================================================
 // Storing a reference to the HTML canvas element to the canvas variable. Then creating a ctx variable to store the 2d renders.
 //==============================================================
-var highscore = localStorage.getItem("highscore")
+let score = 0;
+var highscore = 0;
 
 function doAllTheThings() {
     const element = document.getElementById("button-id")
@@ -51,7 +52,7 @@ var brickGrid = new Array(brickColumns * brickRows);
 var brickCount = 0;
 var numChoice = 0;
 /* var status = 1; */
-let score = 0;
+
 var timer;
 let timeStart = 0;
 
@@ -138,7 +139,7 @@ class Brick {
 }
 
 let totalHP = [];
-console.log ("TOTOTTOTOTOTOTL", totalHP)
+/* console.log ("TOTOTTOTOTOTOTL", totalHP) */
 
 /* const allEqual = totalHP => totalHP.every(val => val === totalHP[0]) */
     
@@ -178,7 +179,7 @@ class gameManager {
                 /* brick.getHP; */
                 this.brickHP = this.brickHP + brick.getHP()
 
-                console.log("BRICKS", this.brickHP)
+                /* console.log("BRICKS", this.brickHP) */
                 brick.draw();
 
                 rowArray.push(brick);
@@ -242,7 +243,8 @@ class gameManager {
 var manager = new gameManager(12,3);
 
 
-
+var soundHit = new Audio('../sounds/hit.wav')
+var soundPaddle = new Audio ('../sounds/clap.wav')
 
 
 function collisionDetection() {
@@ -260,6 +262,7 @@ function collisionDetection() {
                 if (x > b.x && x < b.x+b.width && y > b.y && y < b.y+b.height){
                     ballSpeedY = -ballSpeedY;
                     b.status = b.status - 1; 
+                    soundHit.play();
                     
                     
 
@@ -371,7 +374,7 @@ function draw(){
 
     if (x + ballSpeedX > canvas.width-ballRadius || x + ballSpeedX < ballRadius) {
         ballSpeedX = -ballSpeedX;
-       /*  soundPaddle.play(); */
+       
     }///adding in the ballRadius means the ball doesn't "disappear" into the wall as it hits
 
     if (y + ballSpeedY < ballRadius) {
@@ -379,6 +382,7 @@ function draw(){
     } else if (y + ballSpeedY > canvas.height-ballRadius || y + ballSpeedY < ballRadius) {
         if (x > paddleX && x < paddleX + paddleWidth) {
             ballSpeedY = -ballSpeedY; ///this else-if is for collission detection with the paddle.
+            soundPaddle.play();
         }
         else {alert("GAME OVER");
        /*  document.location.reload(); */
@@ -465,6 +469,7 @@ function drawScore () {
 function updateTimer(){
     timeStart = timeStart + 1;
 }
+
 timer = setInterval(updateTimer, 1000);
 updateTimer();
 
@@ -479,21 +484,6 @@ function drawTimer () {
 }
 
 
-/*     if (score > highscore) {
-        localStorage.setItem("highscore", score);
-        console.log("HIGH SCORE", highscore)
-    }
-
-else {localStorage.setItem("highscore", score);
-console.log("HIGH SCORE", highscore)
-} */
-
-/* if (score > highscore) {
-    localStorage.setItem("highscore", score);
-    
-} */
-
-
 
 
 
@@ -501,7 +491,7 @@ console.log("HIGH SCORE", highscore)
 let startButton = document.getElementById("button-id");
 startButton.addEventListener("click", doAllTheThings)
 
-let scoreStr = localStorage.getItem(highscore);
+/* let scoreStr = localStorage.getItem(highscore);
         if (scoreStr == null) {
             highscore = 0;
             console.log("HIGH SCORE", highscore)
@@ -510,4 +500,4 @@ let scoreStr = localStorage.getItem(highscore);
             console.log("HIGH SCORE", highscore)
         }
 console.log("HIGH SCORE", highscore)
-console.log(localStorage)
+console.log(localStorage) */
