@@ -1,9 +1,16 @@
 //==============================================================
 // Storing a reference to the HTML canvas element to the canvas variable. Then creating a ctx variable to store the 2d renders.
 //==============================================================
+var highscore = localStorage.getItem("highscore")
+
+function doAllTheThings() {
+    const element = document.getElementById("button-id")
+    element.remove();
 
 const canvas = document.getElementById("brickCanvas"); 
 const ctx = canvas.getContext("2d");
+
+
 
 //==============================================================
 // Power Ups
@@ -45,7 +52,6 @@ var brickCount = 0;
 var numChoice = 0;
 /* var status = 1; */
 let score = 0;
-var highscore = localStorage.getItem("highscore")
 var timer;
 let timeStart = 0;
 
@@ -223,13 +229,20 @@ class gameManager {
         console.log("%%%%%%%%%%%%%%%%%%%%%%%%%%%", rowDepleted) */
         return rowDepleted;
   
-    }}
+    }
+    stop() {
+        console.log('stop game')
+    }
+}
 
 //==============================================================
 // Global Draw Functions
 //==============================================================
 
 var manager = new gameManager(12,3);
+
+
+
 
 
 function collisionDetection() {
@@ -274,6 +287,7 @@ function collisionDetection() {
                     else{
                     numChoice ++
                     brickCount = 0;
+                    drawBall2();
                     
                     manager = new gameManager(12,3);}
                     
@@ -300,6 +314,14 @@ function drawBall() {
     powerSticky = false;
     powerSuper = false; */
 
+}
+
+function drawBall2() {
+    ctx.beginPath();
+    ctx.arc(x+1, y-1, ballRadius, 0, Math.PI*2); // the first 2 numbers are the x/y coordinates on the screen, the 3rd is size/radius. The 4th is...fill? Maybe? x was originally 50, y was originally 50. They are replaced here as 'x' and 'y' to help make them move. See below.
+    ctx.fillStyle = "#00ff08";
+    ctx.fill();
+    ctx.closePath();
 }
 
 function drawPaddle (){
@@ -471,6 +493,13 @@ console.log("HIGH SCORE", highscore)
     
 } */
 
+
+
+
+
+    }
+let startButton = document.getElementById("button-id");
+startButton.addEventListener("click", doAllTheThings)
 
 let scoreStr = localStorage.getItem(highscore);
         if (scoreStr == null) {
