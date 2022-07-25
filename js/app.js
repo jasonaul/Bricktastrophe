@@ -134,15 +134,6 @@ class Brick {
 }
 
 let totalHP = [];
-/* console.log ("TOTOTTOTOTOTOTL", totalHP) */
-
-/* const allEqual = totalHP => totalHP.every(val => val === totalHP[0]) */
-    
-
-/* function allAreEqual(array) {
-    const result = new Set(array).size === 0;
-    return result
-} */
 
 
 var brickles = new Brick (1)
@@ -182,12 +173,6 @@ class gameManager {
             }
 
 
-/*             let hpSum = 0;
-            brickGrid.forEach(element => {
-                hpSum += element.brickles.status;
-            });
-
-            console.log("SUM SUM SUM SUM SUM", hpSum) */
 
             this.brickGrid.push(rowArray);
             
@@ -198,12 +183,11 @@ class gameManager {
 
         var rowPosition = brick.position[0];
         //Check all bricks in this row:
-        /* console.log("POSSSSSSSSSSSITION", brick.position[0]) */
+
 
         var rowDepleted = true;
 
 
-        /* console.log(rowPosition); */
         var rowCollection = this.brickGrid[rowPosition];
         for (let i = 0; i < rowCollection.length; i++){
             var myBrick = rowCollection[i];
@@ -251,7 +235,7 @@ function collisionDetection() {
             let b = bricksMatrix[r][c]
 
 
-           /*  console.log("STATUS STATUS STATUS", bricksMatrix[11][0].status) */
+
           
             if (b.status >= 1) {
                 if (x > b.x && x < b.x+b.width && y > b.y && y < b.y+b.height){
@@ -308,9 +292,6 @@ function drawBall() {
     ctx.fillStyle = "#0095DD";
     ctx.fill();
     ctx.closePath();
-/*     powerExtension = false;
-    powerSticky = false;
-    powerSuper = false; */
 
 }
 
@@ -331,19 +312,7 @@ function drawPaddle (){
 
 }
 
-/* function PowerUp (x, y, size, type) {
-    this.w = size;
-    this.h = size;
-    this.x = x;
-    this.y = y;
-    this.type = type;
-    this.yveolcity = powerupSpeed * height;
-}
- */
-/* function drawPowerUps() {
-    ctx.lineWidth = wall * 0.35;
-}
- */
+
 function draw(){
     ctx.clearRect(0, 0, canvas.width, canvas.height); /// THIS LINE OF CODE IS ESSENTIAL - IT CLEARS THE CANVAS BEFORE EACH FRAME, meaning the ball won't leave a train
     drawBall()
@@ -410,7 +379,7 @@ function draw(){
    
 }
 
-/* console.log("NEW BRICK COUNT", bricksMatrix) */
+
 
 
 //==============================================================
@@ -486,13 +455,3 @@ function drawTimer () {
 let startButton = document.getElementById("button-id");
 startButton.addEventListener("click", doAllTheThings)
 
-/* let scoreStr = localStorage.getItem(highscore);
-        if (scoreStr == null) {
-            highscore = 0;
-            console.log("HIGH SCORE", highscore)
-        } else {
-            highscore = parseInt(scoreStr);
-            console.log("HIGH SCORE", highscore)
-        }
-console.log("HIGH SCORE", highscore)
-console.log(localStorage) */
