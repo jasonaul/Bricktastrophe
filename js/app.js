@@ -28,11 +28,6 @@ const powerupType = {
 let powerups = [];
 var powerExtension, powerSticky, powerSuper
 
-/* const soundBrick = new Audio("/sounds/brick.m4a")
-const soundPaddle = new Audio("/sounds/paddle.m4a")
-const soundPower = new Audio("/sounds/powerup.m4a")
-const soundWall = new Audio("/sounds/wall.m4a") */
-
 
 //==============================================================
 // Global Variables
