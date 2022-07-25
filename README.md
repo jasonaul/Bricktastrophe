@@ -16,6 +16,7 @@ After a certain pre-determined score has been reached, each new screen of bricks
 
 ## Final Product
 
+![final](https://user-images.githubusercontent.com/63729691/180864083-02cdb782-8e71-4277-8c0e-77c59316ab17.PNG)
 
 
 ## User Stories
